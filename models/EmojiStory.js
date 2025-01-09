@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose"
+import mongoose from "mongoose"
 
 export const EmojiStorySchema = mongoose.Schema({
     emojiSequence: [String],
@@ -8,4 +8,4 @@ export const EmojiStorySchema = mongoose.Schema({
     createdAt: Date
 })
 
-// const EmojiStory = model('EmojiStory', EmojiStorySchema)
+export const EmojiStory = mongoose.model("EmojiStory", EmojiStorySchema)

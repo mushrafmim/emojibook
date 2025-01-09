@@ -1,15 +1,15 @@
-import EmojiStory from "../models/EmojiStory.js"
-import { Story } from "../server.js"
+import { EmojiStory } from "../models/EmojiStory.js"
 
 export default class StoryController {
     static async getStories(req, res) {
-        const stories = await EmojiStory.findAll()
+        const stories = await EmojiStory.find()
 
-        res.json(stories)
+        res.send(stories)
     }
 
     static async createStory(req, res) {
-        const story = new Story({
+
+        const story = new EmojiStory({
             emojiSequence: req.body.emojiSequence,
             translation: req.body.translation,
             authorNickname: req.body.authorNickname,
@@ -19,6 +19,16 @@ export default class StoryController {
 
         await story.save()
 
-        res.json({ message: " tory created successfully" })
+        res.json({ message: "story created successfully" })
+    }
+
+    static async rateStory(req, res) {
+        const data = await EmojiStory.findById(req.params.id).exec()
+
+        data.likes += 1
+
+        await data.save()
+
+        res.json({ success: true })
     }
 }

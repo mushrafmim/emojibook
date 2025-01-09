@@ -1,33 +1,14 @@
-import { Story } from "../server.js"
+import { Router } from "express"
+import StoryController from "../controllers/story.controller.js"
 
-export default class StoryController {
-    static async getStories(req, res) {
-        const stories = await Story.find()
+var router = new Router()
 
-        res.send(stories)
-    }
+router.route("/story")
+    .get(StoryController.getStories)
+    .post(StoryController.createStory)
 
-    static async createStory(req, res) {
+router.route("/story/:id")
+    .put(StoryController.rateStory)
 
-        const story = new Story({
-            emojiSequence: req.body.emojiSequence,
-            translation: req.body.translation,
-            authorNickname: req.body.authorNickname,
-            likes: 0,
-            createdAt: new Date()
-        })
 
-        await story.save()
-
-        res.json({ message: "story created successfully" })
-    }
-
-    static async rateStory(req, res) {
-        console.log(req)
-        const data = await Story.findById(req.params.id).exec()
-
-        data.likes += 1
-
-        await data.save()
-    }
-}
+export default router
